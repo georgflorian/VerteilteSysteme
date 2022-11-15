@@ -12,13 +12,9 @@ public int jitter;
 
     public void run() {
 
-        System.out.println("Start");
+        execute();
 
-        send(id, peers[2]);
-
-        recieve(id, peers[2]);
-
-        System.out.println("Ende");
+        listener();
 
     }
 
@@ -30,28 +26,49 @@ public int jitter;
        this.sleep = sleep;
        this.jitter = jitter;
 
+   }
 
+    void execute(){
+        Random rand = new Random();
+        int x = rand.nextInt(4);
+        if (x == this.id){
+            if (x == 0){
+                x=x+1;
+                send(this.id, peers[x]);
+            }
+            else{
+                x = x-1;
+                send(this.id, peers[x]);
+            }
+        }
+        else
+            send(this.id, peers[x]);
 
    }
 
+   void listener(){
+        while (true) {
+            int x = this.id;
+            //System.out.println(x);
+            recieve(this.id, peers[x]);
+        }
+   }
 
        static void send ( int id, LamportNode destination){
 
            try {
-               System.out.println("Start Senden");
-               System.out.println(destination.address);
+               //Thread.sleep((long)(Math.random()*1000));
+               //System.out.println("Start Senden: "+ id);
                Socket client = new Socket(destination.address, destination.port);
-               System.out.println("connected");
                OutputStream output = client.getOutputStream();
-               System.out.println("ausgabe schreiben");
                PrintWriter writer = new PrintWriter(output, true);
-               System.out.println("ausgabe aufnehmen");
                Random rand = new Random();
-               String massage = "Hello" + " " + rand;
+               int x = rand.nextInt();
+               String massage = "Hello" + " " + x;
                System.out.println(massage);
                writer.println(massage);
-               System.out.println("Senden Erfolgreich");
-               System.out.println("Ende Senden");
+               client.close();
+               //System.out.println("Senden Erfolgreich");
 
            } catch (Exception e) {
                System.out.println("Senden fehlgeschlagen.");
@@ -62,17 +79,30 @@ public int jitter;
        public void recieve ( int id, LamportNode ziel){
 
            try {
-               System.out.println("Start empfangen");
+               //Thread.sleep((long)(Math.random()*1000));
+               System.out.println("Start empfangen: " + id);
                Socket node = new Socket(ziel.address, ziel.port);
-               InputStream input = node.getInputStream();
-               BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+               System.out.println("Connecting...");
+               BufferedReader reader = new BufferedReader(new InputStreamReader(node.getInputStream()));
+               System.out.println("Reader initialized");
                String line = reader.readLine();
-               System.out.println("Empfangen Erfolgreich");
+               System.out.println("Empfangen Erfolgreich: "+ line);
+               node.close();
+
 
            } catch (Exception e) {
                System.out.println("Empfangen fehlgeschlagen.");
            }
 
+       }
+
+       public void logging (){
+        try{
+
+        }
+        catch (Exception e) {
+            System.out.println();
+        }
        }
 
 }

@@ -1,11 +1,25 @@
 import java.net.InetAddress;
+import java.net.ServerSocket;
 
 public class LamportTest {
     public static int sleep = 100; //Wartezeit vor Versenden
     public static int jitter = 10; // jitter fuer Log-Nachrichten
 
 
+
 public static void main (String[] args){
+
+    try{
+        ServerSocket A = new ServerSocket(9001);
+        ServerSocket B = new ServerSocket(9002);
+        ServerSocket C = new ServerSocket(9003);
+        ServerSocket D = new ServerSocket(9004);
+        ServerSocket L = new ServerSocket(9000);
+    }
+    catch (Exception e){
+        System.out.println("Server starten fehlgeschlagen");
+    }
+
     try {
         LamportNode logger = new LamportNode ("Logger", InetAddress.getLocalHost (), 9000);
         LamportNode A = new LamportNode ("Einstein", InetAddress.getLocalHost (), 9001);
