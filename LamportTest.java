@@ -1,3 +1,4 @@
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
@@ -8,17 +9,6 @@ public class LamportTest {
 
 
 public static void main (String[] args){
-
-    try{
-        ServerSocket A = new ServerSocket(9001);
-        ServerSocket B = new ServerSocket(9002);
-        ServerSocket C = new ServerSocket(9003);
-        ServerSocket D = new ServerSocket(9004);
-        ServerSocket L = new ServerSocket(9000);
-    }
-    catch (Exception e){
-        System.out.println("Server starten fehlgeschlagen");
-    }
 
     try {
         LamportNode logger = new LamportNode ("Logger", InetAddress.getLocalHost (), 9000);

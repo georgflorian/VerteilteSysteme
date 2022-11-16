@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class LamportWorker extends Thread{
@@ -12,11 +13,11 @@ public int jitter;
 
     public void run() {
 
+        //listener();
         execute();
 
-        listener();
-
     }
+
 
    public LamportWorker (int id, LamportNode [] peers, LamportNode logger, int sleep, int jitter) {
 
@@ -47,28 +48,30 @@ public int jitter;
    }
 
    void listener(){
-        while (true) {
-            int x = this.id;
-            //System.out.println(x);
-            recieve(this.id, peers[x]);
-        }
+
+        int x = this.id;
+        //System.out.println(x);
+        recieve(this.id, peers[x]);
    }
 
-       static void send ( int id, LamportNode destination){
+       void send ( int id, LamportNode destination){
 
            try {
-               //Thread.sleep((long)(Math.random()*1000));
+
+               LamportNode worker  = peers[id];
+               DatagramSocket ds = new DatagramSocket(worker.port);
+
+               Thread.sleep((long)(Math.random()*1000));
                //System.out.println("Start Senden: "+ id);
-               Socket client = new Socket(destination.address, destination.port);
-               OutputStream output = client.getOutputStream();
-               PrintWriter writer = new PrintWriter(output, true);
                Random rand = new Random();
                int x = rand.nextInt();
                String massage = "Hello" + " " + x;
                System.out.println(massage);
-               writer.println(massage);
-               client.close();
-               //System.out.println("Senden Erfolgreich");
+               byte [] buffer = massage.getBytes();
+               System.out.println(data(buffer));
+               DatagramPacket DPsend = new DatagramPacket(buffer, buffer.length, destination.port);
+               ds.send(DPsend);
+               System.out.println("Senden Erfolgreich");
 
            } catch (Exception e) {
                System.out.println("Senden fehlgeschlagen.");
@@ -79,16 +82,23 @@ public int jitter;
        public void recieve ( int id, LamportNode ziel){
 
            try {
-               //Thread.sleep((long)(Math.random()*1000));
-               System.out.println("Start empfangen: " + id);
-               Socket node = new Socket(ziel.address, ziel.port);
-               System.out.println("Connecting...");
-               BufferedReader reader = new BufferedReader(new InputStreamReader(node.getInputStream()));
-               System.out.println("Reader initialized");
-               String line = reader.readLine();
-               System.out.println("Empfangen Erfolgreich: "+ line);
-               node.close();
+               System.out.println("Empfangen starten.");
+               LamportNode worker  = peers[id];
+               DatagramSocket ds = new DatagramSocket(worker.port);
+               System.out.println("Socket geöffnet.");
+               byte[] receive = new byte[1];
+               DatagramPacket DpRecieve = null;
 
+               while (true){
+
+                   DpRecieve = new DatagramPacket(receive, receive.length);
+                   ds.receive(DpRecieve);
+
+                   System.out.println("Message: "+ data(receive));
+
+                   receive = new byte[1];
+
+               }
 
            } catch (Exception e) {
                System.out.println("Empfangen fehlgeschlagen.");
@@ -103,6 +113,21 @@ public int jitter;
         catch (Exception e) {
             System.out.println();
         }
+       }
+
+       public static StringBuilder data(byte[] a){
+
+        if (a == null){
+            return null;
+        }
+        StringBuilder text = new StringBuilder();
+        int i = 0;
+        while (a[i] != 0){
+            text.append((char) a[i]);
+            i++;
+        }
+        System.out.println(text);
+        return text;
        }
 
 }
