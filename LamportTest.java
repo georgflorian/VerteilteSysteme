@@ -31,7 +31,7 @@ public static void main (String[] args){
         curie.start ();
         turing.start ();
 
-        Thread.sleep(8000); //Zeit bis Stopp
+        Thread.sleep(800); //Zeit bis Stopp
 
         //Alles Stoppen
         einstein.interrupt ();
@@ -42,7 +42,9 @@ public static void main (String[] args){
         Thread.sleep(500);           //Puffer fuer Nachrichten im Umlauf
         log.interrupt ();
         Thread.sleep(100);          //Zeit fuer Logger 
-    } catch (Exception e) {}
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
 
     System.exit (0);
 }//main
