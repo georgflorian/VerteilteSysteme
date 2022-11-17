@@ -31,8 +31,9 @@ public class Recieving extends Thread{
                 DpRecieve = new DatagramPacket(receive, receive.length);
                 ds.receive(DpRecieve);
 
-                System.out.println("Message: "+ data(receive)); //"Message: "+ data(receive)
-                Thread t1 = new Logging(id, data(receive).toString(), "Recieved", jitter);
+                System.out.println("Message: "+ data(receive));
+
+                Thread t1 = new Logging(id, data(receive).toString(), "Recieved", jitter, peers[id].clock.getTS());
                 t1.start();
 
                 receive = new byte[99999];

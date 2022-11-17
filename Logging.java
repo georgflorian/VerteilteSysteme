@@ -7,28 +7,30 @@ public class Logging extends Thread{
     public String massage;
     public String method;
     public int jitter;
+    public int time;
 
         public void run(){
 
-            send(id, massage, method);
+            send(id, massage, method, time);
 
         }
 
-        public Logging(int id, String massage, String method, int jitter){
+        public Logging(int id, String massage, String method, int jitter, int time){
             this.id = id;
             this.massage = massage;
             this.method = method;
             this.jitter = jitter;
+            this.time = time;
         }
 
-    void send ( int id, String massage, String method){
+    void send ( int id, String massage, String method, int time){
 
         try {
             DatagramSocket ds = new DatagramSocket();
 
             Thread.sleep(jitter);
             int port = 9000;
-            String log = id + ":" + massage + " " + method;
+            String log = id + ":" + massage + " " + method +" Time: " + time;
             byte [] buffer = log.getBytes();
             int i = buffer.length;
             DatagramPacket DPsend = new DatagramPacket(buffer, 0, i, InetAddress.getLocalHost(), port);
