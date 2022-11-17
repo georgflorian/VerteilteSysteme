@@ -25,13 +25,13 @@ public static void main (String[] args){
         LamportWorker curie = new LamportWorker (2, peers, logger, sleep, jitter );
         LamportWorker turing = new LamportWorker (3, peers, logger, sleep, jitter );
 
-        //log.start ();
+        log.start ();
         einstein.start ();
         euler.start ();
         curie.start ();
         turing.start ();
 
-        Thread.sleep(800); //Zeit bis Stopp
+        Thread.sleep(8000); //Zeit bis Stopp
 
         //Alles Stoppen
         einstein.interrupt ();
@@ -40,7 +40,7 @@ public static void main (String[] args){
         turing.interrupt ();
 
         Thread.sleep(500);           //Puffer fuer Nachrichten im Umlauf
-        //log.interrupt ();
+        log.interrupt ();
         Thread.sleep(100);          //Zeit fuer Logger 
     } catch (Exception e) {}
 

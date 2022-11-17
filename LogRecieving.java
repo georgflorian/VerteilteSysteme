@@ -1,10 +1,9 @@
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-public class Recieving extends Thread{
+public class LogRecieving extends Thread{
     public int id;
     public LamportNode[] peers;
-    public int jitter;
 
     public void run(){
 
@@ -12,17 +11,15 @@ public class Recieving extends Thread{
 
     }
 
-    public Recieving(int id, LamportNode[] peers, int jitter){
+    public LogRecieving(int id, LamportNode[] peers){
         this.id = id;
         this.peers = peers;
-        this.jitter = jitter;
     }
 
     public void recieve ( int id,LamportNode[] peers){
 
         try {
-            LamportNode worker  = peers[id];
-            DatagramSocket ds = new DatagramSocket(worker.port);
+            DatagramSocket ds = new DatagramSocket(id);
             byte[] receive = new byte[99999];
             DatagramPacket DpRecieve = null;
 
@@ -31,9 +28,7 @@ public class Recieving extends Thread{
                 DpRecieve = new DatagramPacket(receive, receive.length);
                 ds.receive(DpRecieve);
 
-                System.out.println("Message: "+ data(receive)); //"Message: "+ data(receive)
-                Thread t1 = new Logging(id, data(receive).toString(), "Recieved", jitter);
-                t1.start();
+                System.out.println("Log: "+ data(receive));
 
                 receive = new byte[99999];
 
