@@ -27,7 +27,6 @@ public class Sending extends Thread{
 
         try {
             peers[id].clock.inc();
-            destination.clock.merge(peers[id].clock.getTS(), destination.clock.getTS());
             DatagramSocket ds = new DatagramSocket();
             Thread.sleep((long)(Math.random()*1000));
             int port = destination.port;

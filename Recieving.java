@@ -31,7 +31,18 @@ public class Recieving extends Thread{
                 DpRecieve = new DatagramPacket(receive, receive.length);
                 ds.receive(DpRecieve);
 
-                System.out.println("Message: "+ data(receive));
+                String text = data(receive).toString();
+                String node = text.substring(0,1);
+
+                int node2 = Integer.parseInt(node);
+
+                if (node2 < peers.length) {
+                    peers[id].clock.merge(peers[id].clock.getTS(), peers[node2].clock.getTS());
+                    //System.out.println("Merge");
+                }
+
+                System.out.println("Message: "+ text);
+
 
                 Thread t1 = new Logging(id, data(receive).toString(), "Recieved", jitter, peers[id].clock.getTS());
                 t1.start();
@@ -42,6 +53,7 @@ public class Recieving extends Thread{
 
         } catch (Exception e) {
             System.out.println("Empfangen fehlgeschlagen.");
+            e.printStackTrace();
         }
 
     }

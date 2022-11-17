@@ -30,7 +30,7 @@ public class Logging extends Thread{
 
             Thread.sleep(jitter);
             int port = 9000;
-            String log = id + ":" + massage + " " + method +" Time: " + time;
+            String log = id + ": " + massage + " " + method +" Time: " + time;
             byte [] buffer = log.getBytes();
             int i = buffer.length;
             DatagramPacket DPsend = new DatagramPacket(buffer, 0, i, InetAddress.getLocalHost(), port);
