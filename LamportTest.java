@@ -1,4 +1,5 @@
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 
 public class LamportTest {
@@ -40,14 +41,16 @@ public static void main (String[] args){
 
         Thread.sleep(500);           //Puffer fuer Nachrichten im Umlauf
         log.interrupt ();
-        Thread.sleep(100);          //Zeit fuer Logger
+        Thread.sleep(500);          //Zeit fuer Logger
 
         int x = 1;
         int z = 0;
-        int length = (LogRecieving.buffer.size() - 1);
+        ArrayList<String> LogList = new ArrayList<String>();
+        LogList.addAll(LogRecieving.buffer);
+        int length = (LogList.size() - 1);
 
         while ( z < length){
-            for (String logdat : LogRecieving.buffer){
+            for (String logdat : LogList){
 
                 String[] teile = logdat.split("Time: ", length);
                 int i = Integer.parseInt(teile[1]);
