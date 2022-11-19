@@ -43,24 +43,24 @@ public static void main (String[] args){
         log.interrupt ();
         Thread.sleep(500);          //Zeit fuer Logger
 
-        int x = 1;
-        int z = 0;
-        ArrayList<String> LogList = new ArrayList<String>();
-        LogList.addAll(LogRecieving.buffer);
-        int length = (LogList.size() - 1);
+        int x = 1;                                                  //variable für Zeitstempelabgleich
+        int z = 0;                                                  //variable zur Begrenzung der Schleifendurchläufe
+        ArrayList<String> LogList = new ArrayList<String>();        //ArrayList für Log Daten
+        LogList.addAll(LogRecieving.buffer);                        //Liste der Log Daten wird importiert
+        int length = (LogList.size() - 1);                          //Länge der Liste wird für die for-Schleife gespeichert
 
-        while ( z < length){
+        while ( z < length){                                                //Schleife für die Sortierung dder Log Daten startet
             for (String logdat : LogList){
 
-                String[] teile = logdat.split("Time: ", length);
+                String[] teile = logdat.split("Time: ", length);      //Der Zeitstempel wird von der Nachricht getrennt
                 int i = Integer.parseInt(teile[1]);
 
                 if ( i == x) {
-                    System.out.println(logdat);
+                    System.out.println(logdat);                             //Nachrichten mit dem passenden Zeitstempel werden ausgegeben
                 }
 
             }
-            x++;
+            x++;                                                            //Zeitstempel wird um 1 erhöht
             z++;
         }
     } catch (Exception e) {

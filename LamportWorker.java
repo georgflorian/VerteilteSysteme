@@ -7,16 +7,16 @@ public class LamportWorker extends Thread {
     public int sleep;
     public int jitter;
 
-
+    //Threads werden automatisch gestartet sobald ein Objekt der Klasse initialisiert wurde
     public void run() {
-        int x = execute();
+        int x = execute();                                      //Funktion zur zufälligen Auswahl des Zielknotens
         Thread t2 = new Sending(id, peers[x], peers, jitter);
-        Thread t1 = new Recieving(id, peers, jitter);
-        t1.start();
-        t2.start();
+        Thread t1 = new Recieving(id, peers, jitter);           //2 neue Thread Objekt werden erzeugt
+        t1.start();                                             //starten des empfangen Thread
+        t2.start();                                             //starten des senden Threads
     }
 
-
+    //Konstruktor für den Lamport Worker
     public LamportWorker(int id, LamportNode[] peers, LamportNode logger, int sleep, int jitter) {
 
         this.id = id;
@@ -28,6 +28,7 @@ public class LamportWorker extends Thread {
 
     }
 
+    //Funktion execute stellt sicher dass ein knoten keine Nachricht an sich selbst senden kann
     public int execute() {
         Random rand = new Random();
         int x = rand.nextInt(4);

@@ -6,6 +6,7 @@ public InetAddress address;
 public int port;
 public LamportClock clock;      //ab Teil (b)
 
+//Konstruktor der Klasse Lamport Node
 public LamportNode (String name, InetAddress ia, int port){
     this.name = name;
     this.address = ia;
