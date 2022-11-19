@@ -26,7 +26,6 @@ public class Sending extends Thread{
     void send ( int id, LamportNode destination, LamportNode[] peers){
 
         try {
-            peers[id].clock.inc();
             DatagramSocket ds = new DatagramSocket();
             Thread.sleep((long)(Math.random()*1000));
             int port = destination.port;
@@ -36,6 +35,7 @@ public class Sending extends Thread{
             byte [] buffer = massage.getBytes();
             int i = buffer.length;
             DatagramPacket DPsend = new DatagramPacket(buffer, 0, i, InetAddress.getLocalHost(), port);
+            peers[id].clock.inc();
             ds.send(DPsend);
             Thread t1 = new Logging(id,massage,"Send", jitter, peers[id].clock.getTS());
             t1.start();
