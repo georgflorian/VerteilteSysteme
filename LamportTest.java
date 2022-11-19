@@ -1,6 +1,5 @@
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.ServerSocket;
+
 
 public class LamportTest {
     public static int sleep = 100; //Wartezeit vor Versenden
@@ -31,7 +30,7 @@ public static void main (String[] args){
         curie.start ();
         turing.start ();
 
-        Thread.sleep(8000); //Zeit bis Stopp
+        Thread.sleep(800); //Zeit bis Stopp
 
         //Alles Stoppen
         einstein.interrupt ();
@@ -41,7 +40,26 @@ public static void main (String[] args){
 
         Thread.sleep(500);           //Puffer fuer Nachrichten im Umlauf
         log.interrupt ();
-        Thread.sleep(100);          //Zeit fuer Logger 
+        Thread.sleep(100);          //Zeit fuer Logger
+
+        int x = 1;
+        int z = 0;
+        int length = (LogRecieving.buffer.size() - 1);
+
+        while ( z < length){
+            for (String logdat : LogRecieving.buffer){
+
+                String[] teile = logdat.split("Time: ", length);
+                int i = Integer.parseInt(teile[1]);
+
+                if ( i == x) {
+                    System.out.println(logdat);
+                }
+
+            }
+            x++;
+            z++;
+        }
     } catch (Exception e) {
         e.printStackTrace();
     }

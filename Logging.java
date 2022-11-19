@@ -19,7 +19,7 @@ public class Logging extends Thread{
             this.id = id;
             this.massage = massage;
             this.method = method;
-            this.jitter = jitter;
+            this.jitter = (int)(Math.random()*1000);
             this.time = time;
         }
 
